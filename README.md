@@ -14,6 +14,12 @@ Eine Plattform für kurze Videos (höchstens 1 Minute). Creator laden Videos hoc
 - **Gemerkt**: alle Videos, die man mit einem Herz markiert hat.
 - **Profil**: Abo-Status, Abo verwalten (Stripe-Kundenportal), Abmelden.
 
+## Klick-Demo auf GitHub Pages
+
+Im Ordner `demo/` liegt eine klickbare Demo der App, die ohne Server läuft. Bei jeder Änderung auf `main` veröffentlicht GitHub sie automatisch unter `https://sillmorten.github.io/kurzclip/`. Dort lässt sie sich auf dem Handy auch über „App installieren“ bzw. „Zum Home-Bildschirm“ installieren.
+
+Einmalig einschalten: im Repo unter **Settings → Pages** bei „Source“ **GitHub Actions** wählen.
+
 ## Lokal starten
 
 Voraussetzung ist Node.js 20 oder neuer.
