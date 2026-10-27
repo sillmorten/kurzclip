@@ -414,6 +414,12 @@ const views = {
           ${logo(26)}
           <h1>Gute Ideen in unter einer Minute.</h1>
           <p>${reg ? "Erstelle ein Konto, um alle Videos freizuschalten und deine Lieblingsvideos zu merken." : "Melde dich an, damit deine Gratis-Videos und dein Abo auf jedem Gerät gelten."}</p>
+          <div class="card" style="gap:10px">
+            <span class="lbl">Schnell anmelden</span>
+            <button type="button" class="cta" data-quick="viewer">Als Zuschauer testen</button>
+            <button type="button" class="cta alt" data-quick="creator">Als Creator testen</button>
+          </div>
+          <div class="or">oder mit E-Mail</div>
           <form id="authform" style="display:flex;flex-direction:column;gap:12px">
             ${reg ? '<input class="inp" id="name" placeholder="Dein Name" autocomplete="name" required>' : ""}
             <input class="inp" id="email" type="email" placeholder="E-Mail-Adresse" autocomplete="email" required>
@@ -443,8 +449,9 @@ const views = {
         <div class="pagehead"><h1>Profil</h1><span class="demo">DEMO</span></div>
         <div class="empty">
           <p>Melde dich an, damit dein Gratis-Zähler und dein Abo auf jedem Gerät gelten.</p>
-          <button class="cta" data-auth="login">Anmelden</button>
-          <button class="cta alt" data-auth="register">Konto erstellen</button>
+          <button class="cta" data-quick="viewer">Schnell anmelden als Zuschauer</button>
+          <button class="cta alt" data-quick="creator">Schnell anmelden als Creator</button>
+          <button class="cta alt" data-auth="login">Mit E-Mail anmelden</button>
           <button class="del" id="reset">Demo zurücksetzen</button>
         </div>`);
     }
@@ -487,7 +494,7 @@ const views = {
           <div class="lbl">Meine Videos</div>
           ${mine.map((v) => `
             <div class="lrow">
-              <a href="#" class="mini ${v.url ? "" : v.g}" data-video="${v.id}" style="position:relative">${v.url ? `<video src="${v.url}" muted playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover"></video>` : ""}</a>
+              <a href="#" class="mini ${v.url ? "" : v.g}" data-video="${v.id}" style="position:relative">${v.poster ? `<img src="${v.poster}" alt="">` : v.url ? `<video src="${v.url}" muted playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover"></video>` : ""}</a>
               <div class="meta"><b>${esc(v.title)}</b><small>${fmtD(v.dur)} · ${plural(v.views, "Aufruf", "Aufrufe")} · ${plural(v.likes, "Herz", "Herzen")}</small></div>
               <span class="st">live</span>
             </div>`).join("")}
@@ -690,9 +697,18 @@ function mountUpload() {
 }
 
 document.addEventListener("click", (e) => {
-  const el = e.target.closest("[data-go],[data-video],[data-auth],[data-plan],[data-mode],#pay,#logout,#reset,#endsub");
+  const el = e.target.closest("[data-quick],[data-go],[data-video],[data-auth],[data-plan],[data-mode],#pay,#logout,#reset,#endsub");
   if (!el) return;
   e.preventDefault();
+  if (el.dataset.quick) {
+    const creator = el.dataset.quick === "creator";
+    S.user = creator ? { name: "Lena Meyer", email: "creator@demo.de" } : { name: "Test Zuschauer", email: "zuschauer@demo.de" };
+    S.creatorMode = creator;
+    save();
+    const next = S.route.name === "auth" ? S.route.next : null;
+    toast(creator ? "Angemeldet als Creator" : "Angemeldet als Zuschauer");
+    return go(creator ? { name: "studio" } : next ? { name: "video", id: Number(next) } : { name: "feed" });
+  }
   if (el.dataset.go) {
     const g = el.dataset.go;
     if (g === "feed") return go({ name: "feed", sort: "neu" });
