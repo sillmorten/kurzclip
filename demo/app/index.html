@@ -225,14 +225,14 @@ textarea.inp { resize: vertical; min-height: 72px; }
 <script>
 const FREE = 4;
 const SEED = [
-  { id: 1, title: "Pasta in 60 Sekunden", creator: "Lena Meyer", dur: 58, views: 1240, likes: 318, g: "g1", desc: "Ein Topf, fünf Zutaten, fertig." },
-  { id: 2, title: "Der beste Kaffee-Trick", creator: "Lena Meyer", dur: 41, views: 860, likes: 122, g: "g2", desc: "So schmeckt Filterkaffee wie aus dem Café." },
-  { id: 3, title: "3 Übungen fürs Büro", creator: "Lena Meyer", dur: 52, views: 2410, likes: 401, g: "g3", desc: "Nacken, Schultern, Rücken. Ohne Matte, direkt am Schreibtisch." },
-  { id: 4, title: "Messer richtig schärfen", creator: "Lena Meyer", dur: 47, views: 730, likes: 96, g: "g4", desc: "Winkel halten, wenig Druck, zehn Züge pro Seite." },
-  { id: 5, title: "Zwiebeln ohne Tränen", creator: "Lena Meyer", dur: 33, views: 1530, likes: 210, g: "g5", desc: "Der Trick mit dem kalten Messer." },
-  { id: 6, title: "Hemd in 20 Sekunden falten", creator: "Lena Meyer", dur: 60, views: 3120, likes: 512, g: "g6", desc: "Nie wieder Knitter im Koffer." },
-  { id: 7, title: "Pflanzen richtig gießen", creator: "Lena Meyer", dur: 44, views: 510, likes: 64, g: "g3", desc: "Fingerprobe statt Kalender." },
-  { id: 8, title: "Schneller einschlafen", creator: "Lena Meyer", dur: 55, views: 1980, likes: 330, g: "g2", desc: "Die 4-7-8-Atmung in einer Minute erklärt." },
+  { id: 1, title: "Pasta in 60 Sekunden", creator: "Lena Meyer", dur: 18, url: "videos/1.mp4", poster: "videos/1.jpg", views: 1240, likes: 318, g: "g1", desc: "Ein Topf, fünf Zutaten, fertig." },
+  { id: 2, title: "Der beste Kaffee-Trick", creator: "Lena Meyer", dur: 18, url: "videos/2.mp4", poster: "videos/2.jpg", views: 860, likes: 122, g: "g2", desc: "So schmeckt Filterkaffee wie aus dem Café." },
+  { id: 3, title: "3 Übungen fürs Büro", creator: "Lena Meyer", dur: 18, url: "videos/3.mp4", poster: "videos/3.jpg", views: 2410, likes: 401, g: "g3", desc: "Nacken, Schultern, Rücken. Ohne Matte, direkt am Schreibtisch." },
+  { id: 4, title: "Messer richtig schärfen", creator: "Lena Meyer", dur: 18, url: "videos/4.mp4", poster: "videos/4.jpg", views: 730, likes: 96, g: "g4", desc: "Winkel halten, wenig Druck, zehn Züge pro Seite." },
+  { id: 5, title: "Zwiebeln ohne Tränen", creator: "Lena Meyer", dur: 18, url: "videos/5.mp4", poster: "videos/5.jpg", views: 1530, likes: 210, g: "g5", desc: "Der Trick mit dem kalten Messer." },
+  { id: 6, title: "Hemd in 20 Sekunden falten", creator: "Lena Meyer", dur: 18, url: "videos/6.mp4", poster: "videos/6.jpg", views: 3120, likes: 512, g: "g6", desc: "Nie wieder Knitter im Koffer." },
+  { id: 7, title: "Pflanzen richtig gießen", creator: "Lena Meyer", dur: 18, url: "videos/7.mp4", poster: "videos/7.jpg", views: 510, likes: 64, g: "g3", desc: "Fingerprobe statt Kalender." },
+  { id: 8, title: "Schneller einschlafen", creator: "Lena Meyer", dur: 18, url: "videos/8.mp4", poster: "videos/8.jpg", views: 1980, likes: 330, g: "g2", desc: "Die 4-7-8-Atmung in einer Minute erklärt." },
 ];
 
 const store = {
@@ -308,12 +308,12 @@ const nav = (cur) => `
 
 const shell = (cur, inner) => `<main class="main">${inner}</main>${nav(cur)}`;
 const logo = (size) => `<span class="logo"${size ? ` style="font-size:${size}px"` : ""}>kurz<i>clip</i></span>`;
-const thumb = (v) => (v.url ? `<video class="mini-scene" src="${v.url}" muted playsinline preload="metadata" style="object-fit:cover;width:100%;height:100%"></video>` : `<span class="mini-scene ${v.g}"></span>`);
+const thumb = (v) => (v.poster ? `<img class="poster" src="${v.poster}" alt="" loading="lazy">` : v.url ? `<video class="mini-scene" src="${v.url}" muted playsinline preload="metadata" style="object-fit:cover;width:100%;height:100%"></video>` : `<span class="mini-scene ${v.g}"></span>`);
 
 function card(v) {
   const st = state(v.id);
   if (st === "locked") {
-    return `<a href="#" class="vc lk" data-video="${v.id}" aria-label="${esc(v.title)}, nur mit Abo"><span class="bgx ${v.g}"></span><span class="d">${fmtD(v.dur)}</span><span class="lock">${I.lock}Mit Abo</span></a>`;
+    return `<a href="#" class="vc lk" data-video="${v.id}" aria-label="${esc(v.title)}, nur mit Abo">${v.poster ? `<img class="poster" src="${v.poster}" alt="">` : `<span class="bgx ${v.g}"></span>`}<span class="d">${fmtD(v.dur)}</span><span class="lock">${I.lock}Mit Abo</span></a>`;
   }
   return `<a href="#" class="vc" data-video="${v.id}">${thumb(v)}${st === "free" ? '<span class="f">GRATIS</span>' : ""}<span class="d">${fmtD(v.dur)}</span><span class="tt">${esc(v.title)}</span><span class="vw">${plural(v.views, "Aufruf", "Aufrufe")}</span></a>`;
 }
@@ -347,7 +347,7 @@ const views = {
     const idx = list.findIndex((x) => x.id === v.id);
     const next = list[idx + 1];
     const media = v.url
-      ? `<video id="vid" src="${v.url}" playsinline loop autoplay></video>`
+      ? `<video id="vid" src="${v.url}"${v.poster ? ` poster="${v.poster}"` : ""} playsinline loop autoplay></video>`
       : `<div class="scene ${v.g}"><i></i><i></i><i></i><b>${esc(v.title)}</b></div>`;
     return `
       <div class="player" id="player">
@@ -375,7 +375,7 @@ const views = {
     const pos = S.watched.length + 1;
     return `
       <div class="player">
-        <div class="bgfill blur ${v.g || "g4"}"></div>
+        ${v.poster ? `<img class="bgfill blur" src="${v.poster}" alt="">` : `<div class="bgfill blur ${v.g || "g4"}"></div>`}
         <div class="shade"></div>
         <div class="top"><a href="#" class="back" data-go="feed">${I.back}Feed</a><span class="chip r">Video ${pos}</span></div>
         <div class="sheet" role="dialog" aria-labelledby="pw">
@@ -552,7 +552,7 @@ function mountPlayer() {
   const pausedEl = document.getElementById("paused");
   const vid = document.getElementById("vid");
   let paused = false, t = 0, last = performance.now(), raf;
-  const setPaused = (p) => { paused = p; pausedEl.hidden = !p; player.classList.toggle("paused-scene", p); if (vid) p ? vid.pause() : vid.play().catch(() => {}); };
+  const setPaused = (p) => { paused = p; pausedEl.hidden = !p; player.classList.toggle("paused-scene", p); if (vid) { if (p) vid.pause(); else { vid.muted = false; vid.play().catch(() => {}); } } };
   if (vid) vid.play().catch(() => { vid.muted = true; vid.play().catch(() => setPaused(true)); });
   const tick = (now) => {
     if (!vid && !paused) { t = (t + (now - last) / 1000) % v.dur; }
