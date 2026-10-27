@@ -10,4 +10,4 @@ export function middleware(req: NextRequest) {
   return res;
 }
 
-export const config = { matcher: ["/((?!_next/|favicon|api/poster).*)"] };
+export const config = { matcher: ["/((?!_next/|favicon|api/poster|sw.js|manifest|icon-|apple-touch).*)"] };
