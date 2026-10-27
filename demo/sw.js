@@ -1,5 +1,3 @@
-// Minimaler Service Worker, damit Browser die App als installierbar erkennen.
-// Videos und Seiten kommen immer frisch vom Server, damit die Paywall stimmt.
+// Ersetzt den alten Service Worker unter /kurzclip/ und meldet ihn sofort ab.
 self.addEventListener("install", () => self.skipWaiting());
-self.addEventListener("activate", (e) => e.waitUntil(self.clients.claim()));
-self.addEventListener("fetch", () => {});
+self.addEventListener("activate", (e) => e.waitUntil(self.registration.unregister()));

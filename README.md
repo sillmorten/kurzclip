@@ -16,7 +16,7 @@ Eine Plattform für kurze Videos (höchstens 1 Minute). Creator laden Videos hoc
 
 ## Klick-Demo auf GitHub Pages
 
-Im Ordner `demo/` liegt eine klickbare Demo der App, die ohne Server läuft. Bei jeder Änderung auf `main` veröffentlicht GitHub sie automatisch unter `https://sillmorten.github.io/kurzclip/`. Dort lässt sie sich auf dem Handy auch über „App installieren“ bzw. „Zum Home-Bildschirm“ installieren.
+Im Ordner `demo/` liegt eine klickbare Demo der App, die ohne Server läuft. Bei jeder Änderung auf `main` veröffentlicht GitHub sie automatisch unter `https://sillmorten.github.io/kurzclip/app/`. Dort lässt sie sich auf dem Handy auch über „App installieren“ bzw. „Zum Home-Bildschirm“ installieren.
 
 Einmalig einschalten: im Repo unter **Settings → Pages** bei „Source“ **GitHub Actions** wählen.
 
